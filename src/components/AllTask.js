@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import AddNewTask from "./AddNewTask";
 import AllTaskPage from "./TaskBox/AllTaskPage";
@@ -13,7 +13,20 @@ const TaskList = styled.div``;
 const UnorderedList = styled.ul``;
 const List = styled.li``;
 const AllTask = () => {
-  const items = useSelector((state) => state.allTask);
+  const dispatch = useDispatch();
+  const tasks = useSelector((state) => state.allTask);
+
+  let localArr = [];
+  useEffect(() => {
+    const fetcher = () => {
+      localArr = JSON.parse(localStorage.getItem("tasks"));
+
+      if (localArr) {
+        dispatch({ type: "reload", item: localArr });
+      }
+    };
+    fetcher();
+  }, []);
 
   const [addNewTaskVisibility, setAddNewTaskVisibility] = useState(false);
   const addNewTaskVisibilityHandler = () => {
@@ -34,7 +47,7 @@ const AllTask = () => {
           />
         )}
       </TaskList>
-      {items.map((item) => {
+      {tasks.map((item) => {
         return <AllTaskPage key={item.id} item={item} />;
       })}
     </AllTaskBox>

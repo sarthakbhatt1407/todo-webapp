@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Modal from "../UI/Modal";
 const TaskBox = styled.div`
@@ -56,7 +56,7 @@ const AddNewTask = (props) => {
     id: "",
   };
   const dispatch = useDispatch();
-
+  const allTask = useSelector((state) => state.allTask);
   const [inputFields, setInputFields] = useState(defaultInpFields);
 
   const onChangeHandler = (e) => {
@@ -103,6 +103,7 @@ const AddNewTask = (props) => {
         type: "add",
         task: { ...inputFields, id: parseInt(Math.random() * 100000) },
       });
+
       setInputFields(defaultInpFields);
     } else {
       alert("Wrong input");

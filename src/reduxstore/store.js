@@ -6,9 +6,14 @@ const defaultState = {
 
 const storeReducer = (state = defaultState, action) => {
   let updatedList;
+  if (action.type === "reload") {
+    return {
+      allTask: action.item,
+    };
+  }
   if (action.type === "add") {
     updatedList = [...state.allTask, action.task];
-
+    localStorage.setItem("tasks", JSON.stringify(updatedList));
     return {
       ...state,
       allTask: updatedList,
@@ -25,7 +30,7 @@ const storeReducer = (state = defaultState, action) => {
 
     updatedList = [...state.allTask];
     updatedList[existingTaskIndex] = updatedTask;
-
+    localStorage.setItem("tasks", JSON.stringify(updatedList));
     return {
       ...state,
       allTask: updatedList,
@@ -41,7 +46,7 @@ const storeReducer = (state = defaultState, action) => {
 
     updatedList = [...state.allTask];
     updatedList[existingTaskIndex] = updatedTask;
-
+    localStorage.setItem("tasks", JSON.stringify(updatedList));
     return {
       ...state,
       allTask: updatedList,
@@ -51,7 +56,9 @@ const storeReducer = (state = defaultState, action) => {
     updatedList = state.allTask.filter((item) => {
       return item.id != action.task.id;
     });
-    console.log(updatedList);
+    if (updatedList.length == 0) {
+      localStorage.clear();
+    }
     return {
       ...state,
       allTask: updatedList,
