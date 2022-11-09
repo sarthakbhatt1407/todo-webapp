@@ -4,7 +4,7 @@ import PendingTask from "./TaskBox/PendingTask";
 
 const PendingTaskPage = (props) => {
   const tasks = useSelector((state) => state.allTask);
-  console.log(tasks);
+
   return (
     <div>
       {tasks.map((task) => {
